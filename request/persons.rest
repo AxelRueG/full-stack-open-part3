@@ -2,3 +2,21 @@ GET http://localhost:3001/api/persons
 
 ###
 DELETE http://localhost:3001/api/persons/4
+
+###
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "name": "Pepito Perez",
+  "number": "342-345678"
+}
+
+###
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+  "name": "",
+  "number": "342-345678"
+}

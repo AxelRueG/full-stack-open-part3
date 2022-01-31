@@ -24,6 +24,8 @@ let db = [
 	},
 ];
 
+app.use(express.json());
+
 app.get('/info', (req, res) => {
 	const html = `<p>Phonebook has info for ${
 		db.length
@@ -44,10 +46,15 @@ app.delete('/api/persons/:id', (req, res) => {
 	res.status(200).end();
 });
 
+app.post('/api/persons', (req, res) => {
+	const { name, number } = req.body;
+	const id = Math.floor(Math.random() * 1000000);
+	const newPerson = { id, name, number };
+	db.push(newPerson);
+	res.status(201).json(newPerson);
+});
+
 app.get('/api/persons', (req, res) => res.json(db));
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => console.log(`listen in port:${PORT}`));
-
-// sat jan 25 2020 19:03:51 GTM +0200 (Eastem European Standart Time)
-// ''
