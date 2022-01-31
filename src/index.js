@@ -48,6 +48,14 @@ app.delete('/api/persons/:id', (req, res) => {
 
 app.post('/api/persons', (req, res) => {
 	const { name, number } = req.body;
+
+	if (!(number && name))
+		return res.status(400).json({ error: 'fill all fields' });
+
+	const exist = db.filter((e) => e.name === name);
+	if (exist.length)
+		return res.status(400).json({ error: 'name must be unique' });
+
 	const id = Math.floor(Math.random() * 1000000);
 	const newPerson = { id, name, number };
 	db.push(newPerson);
