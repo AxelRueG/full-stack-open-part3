@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 
-const db = [
+let db = [
 	{
 		id: 1,
 		name: 'Arto Hellas',
@@ -32,10 +32,16 @@ app.get('/info', (req, res) => {
 });
 
 app.get('/api/persons/:id', (req, res) => {
-	const { id } = req.params;
+	const id = Number(req.params.id);
 	const pos = db.findIndex((elem) => elem.id == id);
 	if (pos < 0) res.status(404).json({});
 	else res.status(200).json(db[pos]);
+});
+
+app.delete('/api/persons/:id', (req, res) => {
+	const id = Number(req.params.id);
+	db = db.filter((elem) => elem.id !== id);
+	res.status(200).end();
 });
 
 app.get('/api/persons', (req, res) => res.json(db));
