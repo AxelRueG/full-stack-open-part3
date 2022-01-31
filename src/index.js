@@ -31,6 +31,13 @@ app.get('/info', (req, res) => {
 	res.send(html);
 });
 
+app.get('/api/persons/:id', (req, res) => {
+	const { id } = req.params;
+	const pos = db.findIndex((elem) => elem.id == id);
+	if (pos < 0) res.status(404).json({});
+	else res.status(200).json(db[pos]);
+});
+
 app.get('/api/persons', (req, res) => res.json(db));
 
 const PORT = process.env.PORT || 3001;
