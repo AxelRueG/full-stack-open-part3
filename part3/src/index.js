@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const morgan = require('morgan');
+const cors = require('cors');
 
 let db = [
 	{
@@ -27,7 +28,7 @@ let db = [
 
 // MIDDLEWARES ---------------------------------------------------------
 app.use(express.json());
-
+app.use(cors());
 app.use(
 	morgan((tokens, req, res) => {
 		const str = JSON.stringify(req.body);
