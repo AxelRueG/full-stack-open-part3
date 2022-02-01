@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const morgan = require('morgan');
 
 let db = [
 	{
@@ -24,8 +25,14 @@ let db = [
 	},
 ];
 
+// MIDDLEWARES ---------------------------------------------------------
 app.use(express.json());
 
+app.use(
+	morgan(':method :url :status :res[content-length] - :response-time ms')
+);
+
+// END POINTS ----------------------------------------------------------
 app.get('/info', (req, res) => {
 	const html = `<p>Phonebook has info for ${
 		db.length
