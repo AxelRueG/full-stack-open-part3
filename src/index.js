@@ -45,6 +45,8 @@ app.use(
 	})
 );
 
+app.use(express.static(__dirname + '/build'));
+
 // END POINTS ----------------------------------------------------------
 app.get('/info', (req, res) => {
 	const html = `<p>Phonebook has info for ${

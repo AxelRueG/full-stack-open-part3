@@ -1,22 +1,24 @@
 {
-  "name": "part3",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "start": "node ./src/index.js",
-    "dev": "nodemon ./src/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "cors": "^2.8.5",
-    "express": "^4.17.2",
-    "morgan": "^1.10.0"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.15"
-  }
+	"name": "part3",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"start": "node ./src/index.js",
+		"dev": "nodemon ./src/index.js",
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"build:UI": "rm -rf src/build && cd ../fullStackOpen/part2/the-phonebook && npm run build --prod && cp -r build ../../../part3/src",
+		"deploy": "git push heroku master"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"cors": "^2.8.5",
+		"express": "^4.17.2",
+		"morgan": "^1.10.0"
+	},
+	"devDependencies": {
+		"nodemon": "^2.0.15"
+	}
 }
