@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const morgan = require('morgan');
 const cors = require('cors');
-require('dotenv').config();
+// require('dotenv').config();
 const Person = require('./models/Person');
 
 // MIDDLEWARES --------------------------------------------------------------
@@ -49,8 +49,9 @@ app.get('/api/persons/:id', (req, res, next) => {
 app.put('/api/persons/:id', (req, res, next) => {
 	const { id } = req.params;
 	const { number } = req.body;
-	Person.findByIdAndUpdate(id, { number }, { new: true })
+	Person.findByIdAndUpdate(id, { number }, { new: true, runValidators: true })
 		.then((response) => {
+			console.log('response: ', response);
 			if (response) res.status(201).json(response);
 			else res.status(404).json({ message: 'not found' });
 		})
@@ -62,7 +63,7 @@ app.delete('/api/persons/:id', (req, res, next) => {
 	Person.findByIdAndDelete(id)
 		.then((response) => {
 			if (response) res.status(200).end();
-			else res.status(404).json({ message: 'not found' });
+			else res.status(404).json({ error: 'not found' });
 		})
 		.catch((e) => {
 			next(e);
