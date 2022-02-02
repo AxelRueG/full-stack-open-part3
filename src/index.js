@@ -36,14 +36,28 @@ app.get('/info', (req, res) => {
 
 app.get('/api/persons/:id', (req, res) => {
 	const { id } = req.params;
-	Person.findById(id).then((response) => res.status(200).json(response));
+	Person.findById(id)
+		.then((response) => {
+			if (response) res.status(200).json(response);
+			else res.status(404).json({ message: 'not found' });
+		})
+		.catch((e) => {
+			console.error(e);
+			res.status(500).end();
+		});
 });
 
 app.delete('/api/persons/:id', (req, res) => {
 	const { id } = req.params;
 	Person.findByIdAndDelete(id)
-		.then(res.status(200).end())
-		.catch(() => res.status(404).json({ message: 'not found' }));
+		.then((response) => {
+			if (response) res.status(200).end();
+			else res.status(404).json({ message: 'not found' });
+		})
+		.catch((e) => {
+			console.error(e);
+			res.status(500).end();
+		});
 });
 
 app.post('/api/persons', (req, res) => {
