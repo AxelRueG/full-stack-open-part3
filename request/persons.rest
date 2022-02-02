@@ -1,15 +1,15 @@
 GET http://localhost:3001/api/persons
 
 ###
-DELETE http://localhost:3001/api/persons/4
+DELETE http://localhost:3001/api/persons/61faa2249ad765cf926b1d3d
 
 ###
 POST http://localhost:3001/api/persons
 Content-Type: application/json
 
 {
-  "name": "Pepito Perez",
-  "number": "342-345678"
+  "name": "Dan Abramov",
+  "number": "12-43-234345"
 }
 
 ###

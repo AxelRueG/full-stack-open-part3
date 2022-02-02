@@ -2,29 +2,8 @@ const express = require('express');
 const app = express();
 const morgan = require('morgan');
 const cors = require('cors');
-
-let db = [
-	{
-		id: 1,
-		name: 'Arto Hellas',
-		number: '040-123456',
-	},
-	{
-		id: 2,
-		name: 'Ada Lovelace',
-		number: '39-44-53235223',
-	},
-	{
-		id: 3,
-		name: 'Dan Abramov',
-		number: '12-43-234345',
-	},
-	{
-		id: 4,
-		name: 'Mary Poppendick',
-		number: '39-23-6423122',
-	},
-];
+require('dotenv').config();
+const Person = require('./models/Person');
 
 // MIDDLEWARES ---------------------------------------------------------
 app.use(express.json());
@@ -56,16 +35,15 @@ app.get('/info', (req, res) => {
 });
 
 app.get('/api/persons/:id', (req, res) => {
-	const id = Number(req.params.id);
-	const pos = db.findIndex((elem) => elem.id == id);
-	if (pos < 0) res.status(404).json({});
-	else res.status(200).json(db[pos]);
+	const { id } = req.params;
+	Person.findById(id).then((response) => res.status(200).json(response));
 });
 
 app.delete('/api/persons/:id', (req, res) => {
-	const id = Number(req.params.id);
-	db = db.filter((elem) => elem.id !== id);
-	res.status(200).end();
+	const { id } = req.params;
+	Person.findByIdAndDelete(id)
+		.then(res.status(200).end())
+		.catch(() => res.status(404).json({ message: 'not found' }));
 });
 
 app.post('/api/persons', (req, res) => {
@@ -84,7 +62,33 @@ app.post('/api/persons', (req, res) => {
 	res.status(201).json(newPerson);
 });
 
-app.get('/api/persons', (req, res) => res.json(db));
+app.get('/api/persons', (req, res) =>
+	Person.find({}).then((response) => res.json(response))
+);
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => console.log(`listen in port:${PORT}`));
+
+// OLD DB
+/*let db = [
+	{
+		id: 1,
+		name: 'Arto Hellas',
+		number: '040-123456',
+	},
+	{
+		id: 2,
+		name: 'Ada Lovelace',
+		number: '39-44-53235223',
+	},
+	{
+		id: 3,
+		name: 'Dan Abramov',
+		number: '12-43-234345',
+	},
+	{
+		id: 4,
+		name: 'Mary Poppendick',
+		number: '39-23-6423122',
+	},
+];*/
