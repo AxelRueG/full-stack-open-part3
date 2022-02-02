@@ -5,7 +5,7 @@ const cors = require('cors');
 require('dotenv').config();
 const Person = require('./models/Person');
 
-// MIDDLEWARES ---------------------------------------------------------
+// MIDDLEWARES --------------------------------------------------------------
 app.use(express.json());
 app.use(cors());
 app.use(
@@ -26,7 +26,7 @@ app.use(
 
 app.use(express.static(__dirname + '/build'));
 
-// END POINTS ----------------------------------------------------------
+// END POINTS ---------------------------------------------------------------
 app.get('/info', (req, res) => {
 	const html = `<p>Phonebook has info for ${
 		db.length
@@ -44,6 +44,17 @@ app.get('/api/persons/:id', (req, res, next) => {
 		.catch((e) => {
 			next(e);
 		});
+});
+
+app.put('/api/persons/:id', (req, res, next) => {
+	const { id } = req.params;
+	const { number } = req.body;
+	Person.findByIdAndUpdate(id, { number }, { new: true })
+		.then((response) => {
+			if (response) res.status(201).json(response);
+			else res.status(404).json({ message: 'not found' });
+		})
+		.catch((e) => next(e));
 });
 
 app.delete('/api/persons/:id', (req, res, next) => {
@@ -76,7 +87,7 @@ app.get('/api/persons', (req, res) =>
 	Person.find({}).then((response) => res.json(response))
 );
 
-// ERRORS HANDLERS
+// ERRORS HANDLERS ----------------------------------------------------------
 // handler of requests with unknown endpoint
 const unknownEndpoint = (request, response) => {
 	response.status(404).send({ error: 'unknown endpoint' });
@@ -94,27 +105,3 @@ app.use(errorHandler);
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => console.log(`listen in port:${PORT}`));
-
-// OLD DB
-/*let db = [
-	{
-		id: 1,
-		name: 'Arto Hellas',
-		number: '040-123456',
-	},
-	{
-		id: 2,
-		name: 'Ada Lovelace',
-		number: '39-44-53235223',
-	},
-	{
-		id: 3,
-		name: 'Dan Abramov',
-		number: '12-43-234345',
-	},
-	{
-		id: 4,
-		name: 'Mary Poppendick',
-		number: '39-23-6423122',
-	},
-];*/
