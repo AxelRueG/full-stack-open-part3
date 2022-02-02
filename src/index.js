@@ -52,14 +52,12 @@ app.post('/api/persons', (req, res) => {
 	if (!(number && name))
 		return res.status(400).json({ error: 'fill all fields' });
 
-	const exist = db.filter((e) => e.name === name);
-	if (exist.length)
-		return res.status(400).json({ error: 'name must be unique' });
+	const person = new Person({
+		name,
+		number,
+	});
 
-	const id = Math.floor(Math.random() * 1000000);
-	const newPerson = { id, name, number };
-	db.push(newPerson);
-	res.status(201).json(newPerson);
+	person.save().then((response) => res.status(201).json(response));
 });
 
 app.get('/api/persons', (req, res) =>
