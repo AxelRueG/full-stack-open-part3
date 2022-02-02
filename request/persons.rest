@@ -3,6 +3,12 @@ GET http://localhost:3001/api/persons
 ###
 GET http://localhost:3001/api/persons/61fab41a78ccd7ed572e0374
 
+### unknow ID or bad ID
+GET http://localhost:3001/api/persons/estoNoEsUnId
+
+### unknow endpoint
+GET http://localhost:3001/api/pers
+
 ###
 DELETE http://localhost:3001/api/persons/61fab41a78ccd7ed572e0374
 
@@ -15,7 +21,7 @@ Content-Type: application/json
   "number": "12-43-234345"
 }
 
-###
+### try post with incompletes fields
 POST http://localhost:3001/api/persons
 Content-Type: application/json
 

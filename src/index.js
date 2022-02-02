@@ -34,7 +34,7 @@ app.get('/info', (req, res) => {
 	res.send(html);
 });
 
-app.get('/api/persons/:id', (req, res) => {
+app.get('/api/persons/:id', (req, res, next) => {
 	const { id } = req.params;
 	Person.findById(id)
 		.then((response) => {
@@ -42,12 +42,11 @@ app.get('/api/persons/:id', (req, res) => {
 			else res.status(404).json({ message: 'not found' });
 		})
 		.catch((e) => {
-			console.error(e);
-			res.status(500).end();
+			next(e);
 		});
 });
 
-app.delete('/api/persons/:id', (req, res) => {
+app.delete('/api/persons/:id', (req, res, next) => {
 	const { id } = req.params;
 	Person.findByIdAndDelete(id)
 		.then((response) => {
@@ -55,8 +54,7 @@ app.delete('/api/persons/:id', (req, res) => {
 			else res.status(404).json({ message: 'not found' });
 		})
 		.catch((e) => {
-			console.error(e);
-			res.status(500).end();
+			next(e);
 		});
 });
 
@@ -77,6 +75,22 @@ app.post('/api/persons', (req, res) => {
 app.get('/api/persons', (req, res) =>
 	Person.find({}).then((response) => res.json(response))
 );
+
+// ERRORS HANDLERS
+// handler of requests with unknown endpoint
+const unknownEndpoint = (request, response) => {
+	response.status(404).send({ error: 'unknown endpoint' });
+};
+app.use(unknownEndpoint);
+
+// handler of requests with result to errors
+const errorHandler = (error, request, response, next) => {
+	console.log(error);
+	if (error.name === 'CastError')
+		return res.status(400).json({ error: 'malformatted id' });
+	else return res.status(500).end();
+};
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => console.log(`listen in port:${PORT}`));
