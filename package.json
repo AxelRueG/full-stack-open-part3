@@ -8,7 +8,7 @@
 		"dev": "nodemon ./src/index.js",
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"build:UI": "rm -rf src/build && cd ../fullStackOpen/part2/the-phonebook && npm run build --prod && cp -r build ../../../part3/src",
-		"deploy": "git push heroku master"
+		"deploy": "git push heroku main"
 	},
 	"keywords": [],
 	"author": "",
