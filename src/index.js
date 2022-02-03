@@ -99,13 +99,15 @@ const unknownEndpoint = (request, response) => {
 app.use(unknownEndpoint);
 
 // handler of requests with result to errors
-const errorHandler = (error, request, response, next) => {
+const errorHandler = (error, req, res, next) => {
 	console.log(error);
+
 	if (error.name === 'CastError')
 		return res.status(400).json({ error: 'malformatted id' });
 	else if (error.name === 'ValidationError')
-		return response.status(400).json({ error: error.message });
-	else return res.status(500).end();
+		return res.status(400).json({ error: error.message });
+
+	next(error);
 };
 app.use(errorHandler);
 
